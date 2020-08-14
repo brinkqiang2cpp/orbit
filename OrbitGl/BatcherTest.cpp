@@ -242,14 +242,13 @@ TEST(Batcher, MultipleDrawCalls) {
 
   batcher.Reset(true);
   PickingId id = MockRenderPickingColor(line_color);
-  EXPECT_DEATH(const PickingUserData* rendered_data = batcher.GetUserData(id),
-               "size");
+  const PickingUserData* rendered_data = nullptr;
+  EXPECT_DEATH(rendered_data = batcher.GetUserData(id), "size");
   id = MockRenderPickingColor(triangle_color);
-  EXPECT_DEATH(const PickingUserData* rendered_data = batcher.GetUserData(id),
-               "size");
+  EXPECT_DEATH(rendered_data = batcher.GetUserData(id), "size");
   id = MockRenderPickingColor(box_color);
-  EXPECT_DEATH(const PickingUserData* rendered_data = batcher.GetUserData(id),
-               "size");
+  EXPECT_DEATH(rendered_data = batcher.GetUserData(id), "size");
+  UNUSED(rendered_data);
 }
 
 }  // namespace

@@ -40,7 +40,7 @@ TEST(PickingManager, BasicFunctionality) {
 
   PickingId invalid_id;
   invalid_id.type = PickingType::kPickable;
-  invalid_id.element_id = 0xdeadbeef;
+  invalid_id.element_id = 0xdead;
   ASSERT_TRUE(pm.GetPickableFromId(invalid_id).expired());
 
   invalid_id.type = PickingType::kLine;
@@ -127,7 +127,9 @@ TEST(PickingManager, RobustnessOnReset) {
 }
 
 TEST(PickingManager, Overflow) {
-  ASSERT_DEATH(PickingId id = PickingId::Create(
-                   PickingType::kLine, 1 << PickingId::kElementIDBitSize),
+  PickingId id;
+  ASSERT_DEATH(id = PickingId::Create(PickingType::kLine,
+                                      1 << PickingId::kElementIDBitSize),
                "kElementIDBitSize");
+  UNUSED(id);
 }
