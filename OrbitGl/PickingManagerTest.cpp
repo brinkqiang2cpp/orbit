@@ -125,3 +125,9 @@ TEST(PickingManager, RobustnessOnReset) {
 
   pickable.reset(new PickableMock());
 }
+
+TEST(PickingManager, Overflow) {
+  ASSERT_DEATH(PickingId id = PickingId::Create(
+                   PickingType::kLine, 1 << PickingId::kElementIDBitSize),
+               "kElementIDBitSize");
+}

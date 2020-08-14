@@ -29,14 +29,12 @@ struct LineBuffer {
     lines_.Reset();
     colors_.Reset();
     picking_colors_.Reset();
-    user_data_.clear();
   }
 
   static const int NUM_LINES_PER_BLOCK = 64 * 1024;
   BlockChain<Line, NUM_LINES_PER_BLOCK> lines_;
   BlockChain<Color, 2 * NUM_LINES_PER_BLOCK> colors_;
   BlockChain<Color, 2 * NUM_LINES_PER_BLOCK> picking_colors_;
-  std::vector<std::unique_ptr<PickingUserData>> user_data_;
 };
 
 struct BoxBuffer {
@@ -44,14 +42,12 @@ struct BoxBuffer {
     boxes_.Reset();
     colors_.Reset();
     picking_colors_.Reset();
-    user_data_.clear();
   }
 
   static const int NUM_BOXES_PER_BLOCK = 64 * 1024;
   BlockChain<Box, NUM_BOXES_PER_BLOCK> boxes_;
   BlockChain<Color, 4 * NUM_BOXES_PER_BLOCK> colors_;
   BlockChain<Color, 4 * NUM_BOXES_PER_BLOCK> picking_colors_;
-  std::vector<std::unique_ptr<PickingUserData>> user_data_;
 };
 
 struct TriangleBuffer {
@@ -59,14 +55,12 @@ struct TriangleBuffer {
     triangles_.Reset();
     colors_.Reset();
     picking_colors_.Reset();
-    user_data_.clear();
   }
 
   static const int NUM_TRIANGLES_PER_BLOCK = 64 * 1024;
   BlockChain<Triangle, NUM_TRIANGLES_PER_BLOCK> triangles_;
   BlockChain<Color, 3 * NUM_TRIANGLES_PER_BLOCK> colors_;
   BlockChain<Color, 3 * NUM_TRIANGLES_PER_BLOCK> picking_colors_;
-  std::vector<std::unique_ptr<PickingUserData>> user_data_;
 };
 
 class Batcher {
@@ -104,7 +98,7 @@ class Batcher {
 
   virtual void Draw(bool picking = false) const;
 
-  void Reset();
+  void Reset(bool start_new_frame = true);
 
   [[nodiscard]] PickingManager* GetPickingManager() { return picking_manager_; }
   void SetPickingManager(PickingManager* picking_manager) {
@@ -138,6 +132,8 @@ class Batcher {
   LineBuffer line_buffer_;
   BoxBuffer box_buffer_;
   TriangleBuffer triangle_buffer_;
+
+  std::vector<std::unique_ptr<PickingUserData>> user_data_;
 };
 
 #endif
